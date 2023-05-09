@@ -17,19 +17,76 @@ import Login from './Login';
 import Register from './Register';
 import InfoTools from './InfoTools';
 import ProtectedRoute from './ProtectedRoute';
+import * as auth from '../utils/auth.js'
 import '../blocks/auth/auth.css'
 
 
 
 function App() {
-// тут я пишу 12код
+  // тут я пишу 12код
 
-const [isLoggedIn, setIsLoggedIn] = useState(false)
-const [token, setToken] = useState('')
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [token, setToken] = useState('')
+  const [signupError, setSignupError] = useState('')
+  const [signinError, setSigninError] = useState('')
+
+  const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   auth.authtorize(token)
+  //     .then(() => {
+  //       setIsLoggedIn(true);
+  //       navigate("/");
+
+  //     })
+  // }, [token])
 
 
+
+  function registerUser({ email, password }) {
+    auth.signupUser(email, password)
+      .then((res) => {
+        handleInfotoolTipPopup();
+        setIsInfotoolTipSuccess(true);
+        navigate('/signin')
+        console.log(res)
+
+      })
+      .catch((err) => {
+        handleInfotoolTipPopup();
+        setIsInfotoolTipSuccess(false);
+        console.log(err)
+        setSignupError('Ошибка регистрации, попробуйте еще раз!')
+      })
+  }
+
+  function loginUser({ email, password }) {
+    auth.signinUser(email, password)
+      .then((res) => {
+        localStorage.setItem("jwt", res.token);
+        setToken(res.token)
+        console.log(res.token);
+        setIsLoggedIn(true);
+        navigate('/')
+      })
+  }
+
+
+
+  // function loginUser({ email, password }) {
+  //   auth.signinUser(email, password)
+  //     .then((res) => {
+  //       localStorage.setItem("jwt", res.token);
+  //       setToken(res.jwt);
+  //       setIsLoggedIn(true);
+  //       navigate('/')
+  //     })
+  //     .catch((err) => console.log(err))
+  // }
 
   // 
+
+
   // тут я пишу код
   const [currentUser, setCurrentUser] = useState('')
 
@@ -49,6 +106,11 @@ const [token, setToken] = useState('')
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
 
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
+
+  const [isInfotoolTipPopupOpen, setIsInfotoolTipPopupOpen] = useState(false);
+
+  const [isInfotoolTipSuccess, setIsInfotoolTipSuccess] = useState(false);
+
 
 
 
@@ -139,11 +201,16 @@ const [token, setToken] = useState('')
     setIsEditAvatarPopupOpen(true)
   };
 
+  function handleInfotoolTipPopup() {
+    setIsInfotoolTipPopupOpen(true)
+  }
+
   function closeAllPopups() {
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
-    setSelectedCard(null)
+    setSelectedCard(null);
+    setIsInfotoolTipPopupOpen(false);
   }
 
 
@@ -172,26 +239,30 @@ const [token, setToken] = useState('')
           } />
 
           <Route
-            path='/signin'
+            path='/signup'
             element={
-              <Register>
+              <Register onUserRegister={registerUser}>
                 <Header
                   textLink={'Войти'}
+                  path={'/signin'}
                 ></Header>
               </Register>
             }
           />
 
           <Route
-            path='/signup'
+            path='/signin'
             element={
-              <Login>
+              <Login onLogin={loginUser}>
                 <Header
                   textLink={'Регистрация'}
+                  path={'/signup'}
                 ></Header>
               </Login>
             }
           />
+
+          <Route path='*' element={isLoggedIn ? <Navigate to='/' /> : <Navigate to='/signin' />} />
 
         </Routes>
 
@@ -242,8 +313,10 @@ const [token, setToken] = useState('')
 
 
         <InfoTools
-          isOpen={isEditProfilePopupOpen}
+          isOpen={isInfotoolTipPopupOpen}
           onClose={closeAllPopups}
+          name={'popup_infotools'}
+          isSuccess={isInfotoolTipSuccess}
         ></InfoTools>
 
       </div>

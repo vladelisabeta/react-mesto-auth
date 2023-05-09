@@ -3,10 +3,10 @@ import iconError from '../images/image-error.svg'
 import iconSuccess from '../images/image-succes.svg'
 
 function InfoTools({ isOpen,
-    onClose }) {
-    // const popupStatusClassName = `popup ${name} ${isOpen ? 'popup_opened' : ''}`
+    onClose, isSuccess, name }) {
+    const popupStatusClassName = `popup ${name} ${isOpen ? 'popup_opened' : ''}`
 
-    const [isSuccess, setIsSuccess] = useState(true)
+    // const [isSuccess, setIsSuccess] = useState(true)
     const icon = `${isSuccess ? iconSuccess : iconError}`;
     const text = `${isSuccess
         ? 'Вы успешно зарегистрировались!'
@@ -14,7 +14,7 @@ function InfoTools({ isOpen,
           Попробуйте ещё раз.`)}`
 
     return (
-        <div className='popup popup_infotools'>
+        <div className={popupStatusClassName}>
             <div className="popup__box">
                 <button className={`popup__button-close`} type="button" onClick={onClose} />
                 <div className={`popup__container popup__container_cards`}>

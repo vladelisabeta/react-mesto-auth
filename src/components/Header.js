@@ -2,11 +2,11 @@ import React from "react";
 import logo from '../images/logo.svg';
 import { Routes, Route, Link } from "react-router-dom";
 
-function Header({textLink}) {
+function Header({textLink, path}) {
   return (
     <header className="header content">
       <img src={logo} alt="Логотип Место" className="header__logo" />
-      <a className="header__link">{textLink}</a>
+      <Link className="header__link" to={path}>{textLink}</Link>
     </header>
 
   )

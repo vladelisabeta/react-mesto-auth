@@ -115,3 +115,8 @@
 }
 
 .popup_info-tools {}
+
+.header__link {
+    text-decoration: none;
+    color: #ffff;
+}
