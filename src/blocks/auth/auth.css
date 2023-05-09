@@ -1,0 +1,117 @@
+.login-container {
+    max-width: 880px;
+    margin: auto;
+}
+
+.auth__form-container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 60px;
+
+}
+
+.auth__text {
+    max-width: 358px;
+    line-height: 120%;
+    font-size: 24px;
+    font-weight: 900;
+    margin-bottom: 50px;
+
+}
+
+.auth__form {
+    min-width: 358px;
+}
+
+.auth__input {
+    border: none;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 114%;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    width: 100%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    font-family: "Inter", "Arial", sans-serif;
+    max-width: 358px;
+    padding-left: 0;
+    padding-right: 0;
+    background-color: black;
+    border-bottom: solid 2px #CCCCCC;
+    color: #FFFFFF;
+}
+
+.auth__button {}
+
+.auth__button {
+    padding: 13px 80px;
+    border-radius: 2%;
+    background-color: #FFFFFF;
+    color: #000000;
+    margin-top: 216px;
+    transition: 0.3s linear;
+    font-size: 18px;
+    font-weight: 400;
+    font-style: normal;
+    font-family: 'Inter';
+    line-height: 114%;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.auth__button:hover {
+    opacity: 80%;
+    cursor: pointer;
+}
+
+.header__link {
+    transition: 0.3s linear;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 120%;
+}
+
+.header__link:hover {
+    opacity: 80%;
+    cursor: pointer;
+}
+
+.auth__login-move {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 120%;
+    color: #ffff;
+    display: block;
+    min-height: 29px;
+    max-width: 358px;
+    text-align: center;
+    transition: 0.3s linear;
+}
+
+.auth__login-move:hover {
+    opacity: 80%;
+    cursor: pointer;
+}
+
+.popup__container_cards {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.popup__infotool-icon {
+    margin-top: 60px
+}
+
+.popup__text_infotool {
+    max-width: 358px;
+    text-align: center;
+    margin: 32px 0 48px 0;
+    padding: 0;
+}
+
+.popup_info-tools {}
