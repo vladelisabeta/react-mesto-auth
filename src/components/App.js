@@ -1,9 +1,8 @@
 
 // import react and usestate (allows not to write React.useState)
 import React, { useState, useEffect } from 'react';
-import { Routes, Route, Link, Navigate, useNavigate } from "react-router-dom";
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import '../index.css';
-import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
 import PopupWithForm from './PopupWithForms';
@@ -18,7 +17,7 @@ import Register from './Register';
 import InfoTools from './InfoTools';
 import ProtectedRoute from './ProtectedRoute';
 import * as auth from '../utils/auth.js'
-import '../blocks/auth/auth.css'
+
 
 
 
@@ -27,19 +26,26 @@ function App() {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [token, setToken] = useState('')
-  const [signupError, setSignupError] = useState('')
-  const [signinError, setSigninError] = useState('')
+  const [email, setEmail] = useState('')
 
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   auth.authtorize(token)
-  //     .then(() => {
-  //       setIsLoggedIn(true);
-  //       navigate("/");
 
-  //     })
-  // }, [token])
+  useEffect(() => {
+    const jwt = localStorage.getItem("jwt");
+    setToken(jwt)
+    if (jwt) {
+      auth.authtorize(jwt)
+        .then((res) => {
+          setIsLoggedIn(true);
+          navigate("/");
+          setEmail(res.data.email)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
+  }, [isLoggedIn, navigate])
 
 
 
@@ -56,7 +62,6 @@ function App() {
         handleInfotoolTipPopup();
         setIsInfotoolTipSuccess(false);
         console.log(err)
-        setSignupError('Ошибка регистрации, попробуйте еще раз!')
       })
   }
 
@@ -65,24 +70,18 @@ function App() {
       .then((res) => {
         localStorage.setItem("jwt", res.token);
         setToken(res.token)
-        console.log(res.token);
         setIsLoggedIn(true);
         navigate('/')
       })
   }
 
 
+  function logOut() {
+    localStorage.removeItem("jwt");
+    setIsLoggedIn(false);
+    setToken("");
+  }
 
-  // function loginUser({ email, password }) {
-  //   auth.signinUser(email, password)
-  //     .then((res) => {
-  //       localStorage.setItem("jwt", res.token);
-  //       setToken(res.jwt);
-  //       setIsLoggedIn(true);
-  //       navigate('/')
-  //     })
-  //     .catch((err) => console.log(err))
-  // }
 
   // 
 
@@ -113,27 +112,14 @@ function App() {
 
 
 
-
-
   useEffect(() => {
-    Promise.all([api.getUserProfile()])
-      .then(([userData]) => {
+    Promise.all([api.getUserProfile(), api.getInitialCards()])
+      .then(([userData, cardData]) => {
         setCurrentUser(userData)
-      })
-      .catch((error) => console.log(`Ошибка: ${error}`))
-  }, []);
-
-
-
-  useEffect(() => {
-    Promise.all([api.getInitialCards()])
-      .then(([cardData]) => {
         setCards(cardData)
       })
       .catch((error) => console.log(`Ошибка: ${error}`))
   }, []);
-
-
 
 
   function handleCardLike(card) {
@@ -220,6 +206,7 @@ function App() {
       <div className="page">
 
         {/* <Header /> */}
+
         <Routes>
 
 
@@ -233,7 +220,13 @@ function App() {
                 onCardClick={handleCardClick}
                 onCardLike={handleCardLike}
                 onCardDelete={handleCardDelete}
-                cards={cards} />
+                cards={cards}
+                loggedIn={isLoggedIn}
+                textLink={'этотекстЛИНКА'}
+                path={'/signin'}
+                onLogOut={logOut}
+                email={email}
+              />
               <Footer />
             </>
           } />
@@ -241,11 +234,13 @@ function App() {
           <Route
             path='/signup'
             element={
-              <Register onUserRegister={registerUser}>
-                <Header
-                  textLink={'Войти'}
-                  path={'/signin'}
-                ></Header>
+              <Register onUserRegister={registerUser}
+                textLink={'Войти'}
+                path={'/signin'}
+                onLogOut={logOut}
+                loggedIn={isLoggedIn}
+                email={email}
+              >
               </Register>
             }
           />
@@ -253,11 +248,13 @@ function App() {
           <Route
             path='/signin'
             element={
-              <Login onLogin={loginUser}>
-                <Header
-                  textLink={'Регистрация'}
-                  path={'/signup'}
-                ></Header>
+              <Login onLogin={loginUser}
+                textLink={'Регистрация'}
+                path={'/signup'}
+                onLogOut={logOut}
+                loggedIn={isLoggedIn}
+                email={email}
+              >
               </Login>
             }
           />

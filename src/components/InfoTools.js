@@ -17,9 +17,9 @@ function InfoTools({ isOpen,
         <div className={popupStatusClassName}>
             <div className="popup__box">
                 <button className={`popup__button-close`} type="button" onClick={onClose} />
-                <div className={`popup__container popup__container_cards`}>
+                <div className={`popup__container popup__infotool-container`}>
                     <img className="popup__infotool-icon" src={icon}></img>
-                    <h3 className="popup__text popup__text_infotool">{text}</h3>
+                    <h3 className="popup__text popup__infotool-text">{text}</h3>
                 </div>
             </div>
         </div>

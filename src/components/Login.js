@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Header from "./Header";
 
-function Login({ children, onLogin }) {
+function Login({ children, onLogin, textLink, path, onLogOut, loggedIn, email }) {
 
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
@@ -17,28 +17,35 @@ function Login({ children, onLogin }) {
 
     function handleSubmit(e) {
         e.preventDefault();
-        console.log('subsub')
+
         onLogin({
             email: login,
             password
         });
-        console.log("submitted")
+
     }
 
 
 
     return (
         <>
-            {children}
-            {/* возможно стоит передать имена ссылок и кнопок через пропсы а доп спан через чилдрен */}
+            {/* {children} */}
+
+            <Header
+                textLink={textLink}
+                path={path}
+                onLogOut={onLogOut}
+                isLoggedIn={loggedIn}
+                email={email}
+            />
+
             {/* <Header textLink={'Регистрация'}></Header> */}
-            <div className="login-container">
+            <div className="auth__container">
 
                 <div className="auth__form-container">
 
                     <h3 className="auth__text">Вход</h3>
                     <form className="auth__form" name="loginform" onSubmit={handleSubmit}>
-
 
                         <input
                             type="email" name="name" id="login" className="auth__input popup__input_type_name" required minLength="2"
@@ -48,14 +55,12 @@ function Login({ children, onLogin }) {
                         <span className="popup__error" id="name-error">
                         </span>
 
-                        <input type="password" name="loginpassword" id="info" className="auth__input popup__input_type_info" required minLength="2"
+                        <input type="password" name="loginpassword" id="loginpassword" className="auth__input popup__input_type_info" required minLength="2"
                             maxLength="200" placeholder="Пароль" onChange={handleChangePassword} />
                         <span className="popup__error" id="info-error">
                         </span>
 
                         <button className="auth__button" type="submit">Войти</button>
-
-                        {/* тут должен быть чилдрен на ссылку при регистрации */}
                     </form>
                     {/* END FORM */}
 
