@@ -45,7 +45,7 @@ function App() {
           console.log(err)
         })
     }
-  }, [navigate])
+  }, [])
 
 
 
@@ -72,9 +72,9 @@ function App() {
         setIsLoggedIn(true);
         navigate('/')
       })
-      .catch((err) => [
+      .catch((err) => {
         console.log(err)
-      ])
+      })
   }
 
 
@@ -124,12 +124,7 @@ function App() {
     }
   }, [isLoggedIn]);
 
-  // Promise.all([api.getUserProfile(), api.getInitialCards()])
-  //   .then(([userData, cardData]) => {
-  //     setCurrentUser(userData)
-  //     setCards(cardData)
-  //   })
-  //   .catch((error) => console.log(`Ошибка: ${error}`))
+  
 
   function handleCardLike(card) {
     const isLiked = card.likes.some(i => i._id === currentUser._id);
