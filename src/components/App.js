@@ -25,7 +25,6 @@ function App() {
   // тут я пишу 12код
 
   const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [token, setToken] = useState('')
   const [email, setEmail] = useState('')
 
   const navigate = useNavigate();
@@ -33,9 +32,9 @@ function App() {
 
   useEffect(() => {
     const jwt = localStorage.getItem("jwt");
-    setToken(jwt)
+
     if (jwt) {
-      auth.authtorize(jwt)
+      auth.checkToken(jwt)
         .then((res) => {
           setIsLoggedIn(true);
           navigate("/");
@@ -45,41 +44,42 @@ function App() {
           console.log(err)
         })
     }
-  }, [isLoggedIn, navigate])
+  }, [navigate])
 
 
 
   function registerUser({ email, password }) {
-    auth.signupUser(email, password)
+    auth.signUpUser(email, password)
       .then((res) => {
-        handleInfotoolTipPopup();
-        setIsInfotoolTipSuccess(true);
+        handleInfoToolTipPopup();
+        setIsInfoToolTipSuccess(true);
         navigate('/signin')
         console.log(res)
 
       })
       .catch((err) => {
-        handleInfotoolTipPopup();
-        setIsInfotoolTipSuccess(false);
+        handleInfoToolTipPopup();
+        setIsInfoToolTipSuccess(false);
         console.log(err)
       })
   }
 
   function loginUser({ email, password }) {
-    auth.signinUser(email, password)
+    auth.signInUser(email, password)
       .then((res) => {
         localStorage.setItem("jwt", res.token);
-        setToken(res.token)
         setIsLoggedIn(true);
         navigate('/')
       })
+      .catch((err) => [
+        console.log(err)
+      ])
   }
 
 
   function logOut() {
     localStorage.removeItem("jwt");
     setIsLoggedIn(false);
-    setToken("");
   }
 
 
@@ -87,7 +87,7 @@ function App() {
 
 
   // тут я пишу код
-  const [currentUser, setCurrentUser] = useState('')
+  const [currentUser, setCurrentUser] = useState({})
 
   const [cards, setCards] = useState([])
 
@@ -106,21 +106,29 @@ function App() {
 
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
 
-  const [isInfotoolTipPopupOpen, setIsInfotoolTipPopupOpen] = useState(false);
+  const [isInfoToolTipPopupOpen, setIsInfoToolTipPopupOpen] = useState(false);
 
-  const [isInfotoolTipSuccess, setIsInfotoolTipSuccess] = useState(false);
+  const [isInfoToolTipSuccess, setIsInfoToolTipSuccess] = useState(false);
 
 
 
   useEffect(() => {
-    Promise.all([api.getUserProfile(), api.getInitialCards()])
+    if (isLoggedIn) {
+      Promise.all([api.getUserProfile(), api.getInitialCards()])
       .then(([userData, cardData]) => {
         setCurrentUser(userData)
         setCards(cardData)
       })
       .catch((error) => console.log(`Ошибка: ${error}`))
-  }, []);
+    }
+  }, [isLoggedIn]);
 
+  // Promise.all([api.getUserProfile(), api.getInitialCards()])
+  //   .then(([userData, cardData]) => {
+  //     setCurrentUser(userData)
+  //     setCards(cardData)
+  //   })
+  //   .catch((error) => console.log(`Ошибка: ${error}`))
 
   function handleCardLike(card) {
     const isLiked = card.likes.some(i => i._id === currentUser._id);
@@ -187,8 +195,8 @@ function App() {
     setIsEditAvatarPopupOpen(true)
   };
 
-  function handleInfotoolTipPopup() {
-    setIsInfotoolTipPopupOpen(true)
+  function handleInfoToolTipPopup() {
+    setIsInfoToolTipPopupOpen(true)
   }
 
   function closeAllPopups() {
@@ -196,7 +204,7 @@ function App() {
     setIsAddPlacePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
     setSelectedCard(null);
-    setIsInfotoolTipPopupOpen(false);
+    setIsInfoToolTipPopupOpen(false);
   }
 
 
@@ -310,10 +318,10 @@ function App() {
 
 
         <InfoTools
-          isOpen={isInfotoolTipPopupOpen}
+          isOpen={isInfoToolTipPopupOpen}
           onClose={closeAllPopups}
           name={'popup_infotools'}
-          isSuccess={isInfotoolTipSuccess}
+          isSuccess={isInfoToolTipSuccess}
         ></InfoTools>
 
       </div>

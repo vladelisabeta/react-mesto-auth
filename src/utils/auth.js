@@ -10,7 +10,7 @@ export function checkResponse(res) {
     return Promise.reject(`Ошибка: ${res.status}`)
 }
 
-export function signupUser(email, password) {
+export function signUpUser(email, password) {
     return fetch(`${BASE_URL}/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -21,19 +21,19 @@ export function signupUser(email, password) {
         .then(res => checkResponse(res))
 };
 
-export function signinUser(email, password) {
+export function signInUser(email, password) {
     return fetch(`${BASE_URL}/signin`, {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
             email: email,
-            password, password
+            password
         })
     })
         .then(res => checkResponse(res))
 };
 
-export function authtorize(jwt) {
+export function checkToken(jwt) {
     return fetch(`${BASE_URL}/users/me`, {
         method: 'GET',
         headers: {

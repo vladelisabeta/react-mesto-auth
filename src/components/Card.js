@@ -28,7 +28,7 @@ function Card({ card, onCardClick, onCardLike, onCardDelete }) {
 
     return (
         // разобраться с чайлд и кей айди
-        <div className="card" key={card._id}>
+        <div className="card">
             {isOwn && <button type="button" className="card__trash" onClick={handleDeleteClick}></button>}
             <img src={card.link} alt={card.name} className="card__image" onClick={handleClick} />
             <div className="card__heart-container">
