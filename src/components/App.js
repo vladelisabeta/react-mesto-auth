@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import '../index.css';
+import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
 import PopupWithForm from './PopupWithForms';
@@ -115,11 +116,11 @@ function App() {
   useEffect(() => {
     if (isLoggedIn) {
       Promise.all([api.getUserProfile(), api.getInitialCards()])
-      .then(([userData, cardData]) => {
-        setCurrentUser(userData)
-        setCards(cardData)
-      })
-      .catch((error) => console.log(`Ошибка: ${error}`))
+        .then(([userData, cardData]) => {
+          setCurrentUser(userData)
+          setCards(cardData)
+        })
+        .catch((error) => console.log(`Ошибка: ${error}`))
     }
   }, [isLoggedIn]);
 
@@ -213,7 +214,10 @@ function App() {
 
       <div className="page">
 
-        {/* <Header /> */}
+        <Header
+          onLogOut={logOut}
+          email={email}
+        />
 
         <Routes>
 
@@ -230,10 +234,6 @@ function App() {
                 onCardDelete={handleCardDelete}
                 cards={cards}
                 loggedIn={isLoggedIn}
-                textLink={'этотекстЛИНКА'}
-                path={'/signin'}
-                onLogOut={logOut}
-                email={email}
               />
               <Footer />
             </>
@@ -243,9 +243,6 @@ function App() {
             path='/signup'
             element={
               <Register onUserRegister={registerUser}
-                textLink={'Войти'}
-                path={'/signin'}
-                onLogOut={logOut}
                 loggedIn={isLoggedIn}
                 email={email}
               >
@@ -257,9 +254,6 @@ function App() {
             path='/signin'
             element={
               <Login onLogin={loginUser}
-                textLink={'Регистрация'}
-                path={'/signup'}
-                onLogOut={logOut}
                 loggedIn={isLoggedIn}
                 email={email}
               >

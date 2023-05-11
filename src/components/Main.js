@@ -1,7 +1,6 @@
 import React from 'react';
 import Card from "./Card";
 import { currentUserContext } from '../contexts/CurrentUserContext';
-import Header from './Header';
 
 function Main({ onEditProfile,
     onAddPlace,
@@ -10,11 +9,6 @@ function Main({ onEditProfile,
     onCardLike,
     onCardDelete,
     cards,
-    textLink,
-    path,
-    onLogOut,
-    email,
-    loggedIn,
 }) {
 
     // контекст 
@@ -22,13 +16,6 @@ function Main({ onEditProfile,
 
     return (
         <>
-            <Header
-                textLink={textLink}
-                path={path}
-                onLogOut={onLogOut}
-                email={email}
-                isLoggedIn={loggedIn}
-            />
             <main className="content">
                 <section className="profile">
                     <div className="profile__image-container" onClick={onEditAvatar}><img src={currentUser.avatar} alt="Аватар профиля"

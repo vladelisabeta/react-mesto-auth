@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-import Login from "./Login";
-import Header from "./Header";
 import { Link } from 'react-router-dom';
 
 
-function Register({ children, onUserRegister, textLink, path, onLogOut, loggedIn, email}) {
+function Register({ onUserRegister }) {
 
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
@@ -31,15 +29,6 @@ function Register({ children, onUserRegister, textLink, path, onLogOut, loggedIn
 
     return (
         <>
-            {/* {children} */}
-
-            <Header
-                textLink={textLink}
-                path={path}
-                onLogOut={onLogOut}
-                isLoggedIn={loggedIn}
-                email={email}
-            />
             <div className="auth__container">
 
                 <div className="auth__form-container">

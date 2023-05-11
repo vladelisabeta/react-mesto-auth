@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import Header from "./Header";
 
-function Login({ children, onLogin, textLink, path, onLogOut, loggedIn, email }) {
+function Login({ onLogin }) {
 
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
@@ -29,17 +28,6 @@ function Login({ children, onLogin, textLink, path, onLogOut, loggedIn, email })
 
     return (
         <>
-            {/* {children} */}
-
-            <Header
-                textLink={textLink}
-                path={path}
-                onLogOut={onLogOut}
-                isLoggedIn={loggedIn}
-                email={email}
-            />
-
-            {/* <Header textLink={'Регистрация'}></Header> */}
             <div className="auth__container">
 
                 <div className="auth__form-container">
